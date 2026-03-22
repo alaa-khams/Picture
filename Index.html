@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Marigold | Daily Ritual</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3D3D3D;
+            --accent: #F3E5AB;
+            --bg: #FAF9F6;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .serif-font { font-family: 'Cormorant Garamond', serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .page-fade { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .loading-dots:after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+    </style>
+</head>
+<body class="p-6">
+
+    <!-- HEADER -->
+    <header class="pt-12 pb-8 text-center w-full max-w-md page-fade">
+        <h1 class="text-3xl serif-font font-semibold tracking-wide text-gray-800">Marigold</h1>
+    </header>
+
+    <!-- MAIN UPLOAD CONTENT -->
+    <main id="main-content" class="w-full max-w-md space-y-8 py-4 page-fade">
+        <div class="text-center">
+            <h2 class="text-2xl serif-font mb-1">Daily Ritual</h2>
+            <p class="text-gray-500 text-sm italic">Capture a moment to nurture the seed.</p>
+        </div>
+        
+        <div class="glass p-6 rounded-[2.5rem] shadow-sm flex flex-col items-center">
+            <!-- IMAGE PREVIEW AREA -->
+            <div 
+                id="preview-box" 
+                class="w-full aspect-square rounded-3xl bg-gray-50/50 border-2 border-dashed border-gray-200 mb-6 flex items-center justify-center overflow-hidden relative group cursor-pointer hover:border-[#F3E5AB] transition-colors"
+            >
+                <div id="placeholder" class="text-center space-y-2">
+                    <svg class="mx-auto text-gray-300 w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <p class="text-gray-400 text-sm font-medium px-4 text-center">Tap to capture from iPhone Camera</p>
+                </div>
+                <img id="preview-img" class="hidden w-full h-full object-cover animate-in fade-in duration-500">
+            </div>
+
+            <!-- CAMERA INPUT -->
+            <input 
+                type="file" 
+                id="file-input" 
+                accept="image/*" 
+                capture="environment" 
+                class="hidden"
+            >
+            
+            <button 
+                id="upload-btn"
+                class="w-full py-4 rounded-2xl bg-[#F3E5AB] hover:bg-[#E8D690] font-semibold flex items-center justify-center gap-2 transition-all shadow-sm active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled
+            >
+                <svg id="upload-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span id="btn-text">Plant the Moment</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- SUCCESS STATE (Hidden) -->
+    <div id="success-state" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-[#FAF9F6] text-center page-fade">
+        <div class="max-w-xs space-y-6">
+            <div class="w-24 h-24 bg-[#F3E5AB] rounded-full flex items-center justify-center mx-auto text-yellow-800 shadow-inner">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div>
+                <h2 class="text-3xl serif-font mb-2 text-gray-800">Ritual Complete</h2>
+                <p class="text-gray-500 italic">Your daily seed is planted in the clouds.</p>
+            </div>
+            
+            <!-- OPTION LINK BELOW UPLOAD -->
+            <div class="flex flex-col gap-4">
+                <a 
+                    id="destination-link"
+                    href="#" 
+                    class="w-full py-4 bg-gray-800 text-white rounded-2xl font-medium shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2"
+                >
+                    <span>View Shared Garden</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+                
+                <button onclick="location.reload()" class="text-gray-400 hover:text-gray-600 text-sm underline underline-offset-4">
+                    Plant another
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Cloudinary Config ---
+        // Replace with your actual Cloudinary details for production
+        const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload";
+        const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET"; 
+
+        const previewBox = document.getElementById('preview-box');
+        const fileInput = document.getElementById('file-input');
+        const previewImg = document.getElementById('preview-img');
+        const placeholder = document.getElementById('placeholder');
+        const uploadBtn = document.getElementById('upload-btn');
+        const btnText = document.getElementById('btn-text');
+        const mainContent = document.getElementById('main-content');
+        const successState = document.getElementById('success-state');
+        const destinationLink = document.getElementById('destination-link');
+
+        let selectedFile = null;
+
+        // Trigger Camera
+        previewBox.onclick = () => fileInput.click();
+
+        // Preview File
+        fileInput.onchange = (e) => {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    previewImg.src = event.target.result;
+                    previewImg.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                    uploadBtn.disabled = false;
+                };
+                reader.readAsDataURL(selectedFile);
+            }
+        };
+
+        // Cloudinary Upload Logic
+        uploadBtn.onclick = async () => {
+            if (!selectedFile) return;
+
+            uploadBtn.disabled = true;
+            btnText.innerHTML = `<span class="loading-dots">Sending to Clouds</span>`;
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('upload_preset', UPLOAD_PRESET);
+
+            try {
+                // If you haven't set up Cloudinary yet, this will fail. 
+                // I've added a fallback to simulate success so you can see the UI.
+                
+                let responseUrl = "#";
+
+                if (UPLOAD_PRESET !== "YOUR_UNSIGNED_PRESET") {
+                    const res = await fetch(CLOUDINARY_URL, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await res.json();
+                    responseUrl = data.secure_url;
+                } else {
+                    // Simulation for testing UI
+                    await new Promise(r => setTimeout(r, 2000));
+                    console.warn("Cloudinary not configured. Simulating success.");
+                    responseUrl = "https://your-next-page.com"; 
+                }
+
+                // Show Success & Set Link
+                destinationLink.href = responseUrl; 
+                mainContent.classList.add('hidden');
+                successState.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Upload failed:", error);
+                btnText.innerText = "Error - Try Again";
+                uploadBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
